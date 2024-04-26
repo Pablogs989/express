@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
+app.use(cors());
 app.use(express.json());
 
 items = [
@@ -14,11 +16,14 @@ items = [
 
 const puerto = 3000;
 
-app.get('/items', (req, res) => {
-    res.send('Listado de items: ' + items.map(items => items.nombre).join(', '));
+app.get('/products', (req, res) => {
+    res.send({
+        description: 'Productos',
+        items
+    });
 });
 
-app.post("/items", (req, res) => {
+app.post("/products", (req, res) => {
     console.log(req.body);
     const newProduct = {
         id: items.length + 1,
@@ -32,7 +37,7 @@ app.post("/items", (req, res) => {
     })
 })
 
-app.put('/items/id/:id', (req, res) => {
+app.put('/products/id/:id', (req, res) => {
     let found = false;
     items.forEach(producto => {
         if (producto.id == req.params.id) {
@@ -53,7 +58,7 @@ app.put('/items/id/:id', (req, res) => {
     }
 });
 
-app.delete("/items/id/:id", (req, res) => {
+app.delete("/products/id/:id", (req, res) => {
     let found = false;
     items.forEach(producto => {
         if (producto.id == req.params.id) {
@@ -68,26 +73,26 @@ app.delete("/items/id/:id", (req, res) => {
     }
 });
 
-app.get('/items/precio/:precio', (req, res) => {
+app.get('/products/precio/:precio', (req, res) => {
     const precio = parseInt(req.params.precio);
     const itemsFilter = items.filter(producto => producto.precio == precio)
     res.send(itemsFilter)
 });
 
-app.get('/items/precio/:min/:max', (req, res) => {
+app.get('/products/precio/:min/:max', (req, res) => {
     const min = parseInt(req.params.min);
     const max = parseInt(req.params.max);
     const itemsFilter = items.filter(producto => producto.precio >= min && producto.precio <= max)
     res.send(itemsFilter)
 });
 
-app.get('/items/id/:id', (req, res) => {
+app.get('/products/id/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const itemsFilter = items.filter(producto => producto.id == id)
     res.send(itemsFilter)
 });
 
-app.get('/items/nombre/:nombre', (req, res) => {
+app.get('/products/nombre/:nombre', (req, res) => {
     const nombre = req.params.nombre;
     const itemsFilter = items.filter(producto => producto.nombre == nombre)
     res.send(itemsFilter)
