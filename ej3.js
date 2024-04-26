@@ -30,6 +30,8 @@ app.post("/products", (req, res) => {
         nombre: req.body.nombre,
         precio: req.body.precio,
     }
+    console.log(req.params);
+
     items.push(newProduct)
     res.status(201).send({
         description: 'Productos',
